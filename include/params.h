@@ -1,0 +1,15 @@
+#ifndef PARAMS_H
+#define PARAMS_H
+
+#define ID_WIDTH 5
+#define NUM_CONCURRENT_RAYS (1 << ID_WIDTH)
+
+#define NUM_TRIGS_WIDTH 3
+#define MAX_TRIGS_PER_NODE ((1 << NUM_TRIGS_WIDTH) - 1)
+
+#define CHILD_IDX_WIDTH (32 - NUM_TRIGS_WIDTH)
+
+#define STACK_SIZE_WIDTH 5
+#define STACK_SIZE ((1 << STACK_SIZE_WIDTH) - 1)
+
+#endif //PARAMS_H
