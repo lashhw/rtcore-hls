@@ -34,6 +34,7 @@ module tb_system();
     
     system_axi_vip_0_0_slv_mem_t slave_agent;
     bit [TRIG_WIDTH*NUM_TEST_TRIGS-1:0] mem;
+    int ii;
     
     bit [ID_WIDTH-1:0]        req_id;
     bit [NUM_TRIGS_WIDTH-1:0] req_num_trigs;
@@ -60,8 +61,6 @@ module tb_system();
     
     always #1 aclk = ~aclk;
     
-    int ii;
-    
     initial begin
         slave_agent = new("slave vip agent", DUT.system_i.axi_vip_0.inst.IF);
         slave_agent.mem_model.set_inter_beat_gap_delay_policy(XIL_AXI_MEMORY_DELAY_RANDOM);
@@ -69,7 +68,8 @@ module tb_system();
         std::randomize(mem);
         for (int i = 0; i < NUM_TEST_TRIGS; i++)
             $display("%d: %h", i, mem[TRIG_WIDTH*i+:TRIG_WIDTH]);
-        for (int i = 0; i < TRIG_WIDTH*NUM_TEST_TRIGS/512; i++)
+        assert((TRIG_WIDTH*NUM_TEST_TRIGS)%512 == 0);
+        for (int i = 0; i < (TRIG_WIDTH*NUM_TEST_TRIGS)/512; i++)
             slave_agent.mem_model.backdoor_memory_write(TRIG_BASE_ADDR+64*i, mem[512*i+:512], {64{1'b1}});
         slave_agent.start_slave();
         
