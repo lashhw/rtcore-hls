@@ -109,6 +109,8 @@ module ist_mem #(
     reg [ADDR_WIDTH-6-1:0]    highaddr_a;
     reg [ADDR_WIDTH-12-1:0]   highaddr_b;
 
+    reg [511:0] m_axi_ddr_rdata_r;
+
     reg [NUM_TRIGS_WIDTH-1:0] num_trigs_left;
     reg [3:0]                 trig_lowidx;
 
@@ -130,7 +132,7 @@ module ist_mem #(
     assign m_axi_ddr_arcache = 4'b1111;
     assign m_axi_ddr_arprot  = 3'b000;
     assign m_axi_ddr_arvalid = (state == S_ADDR_A || state == S_ADDR_B);
-    assign m_axi_ddr_rready  = (state == S_DATA_A || state == S_KEEP_A || state == S_DATA_B);
+    assign m_axi_ddr_rready  = (state == S_DATA_A || state == S_DATA_B);
 
     assign {req_trig_idx, req_num_trigs, req_id} = ist_mem_req_din;
     
@@ -144,7 +146,7 @@ module ist_mem #(
     assign cross_64b = (trig_lowidx[3] ^ trig_lowidx[0]);
 
     assign {rdata[15], rdata[14], rdata[13], rdata[12], rdata[11], rdata[10], rdata[9], rdata[8],
-            rdata[7],  rdata[6],  rdata[5],  rdata[4],  rdata[3],  rdata[2],  rdata[1], rdata[0]} = m_axi_ddr_rdata;
+            rdata[7],  rdata[6],  rdata[5],  rdata[4],  rdata[3],  rdata[2],  rdata[1], rdata[0]} = (state == S_KEEP_A ? m_axi_ddr_rdata_r : m_axi_ddr_rdata);
 
     always @(*) begin
         case (trig_lowidx)
@@ -196,7 +198,7 @@ module ist_mem #(
                 else
                     next_state = S_ADDR_B;
             end
-            S_DATA_A, S_KEEP_A: begin
+            S_DATA_A: begin
                 if (m_axi_ddr_rvalid & m_axi_ddr_rready) begin
                     if (cross_64b) begin
                         next_state = S_DATA_B;
@@ -209,9 +211,20 @@ module ist_mem #(
                         trig_bram_en = 1'b1;
                         next_state = S_KEEP_A;
                     end
-                end else if (state == S_DATA_A) begin
+                end else begin
+                    next_state = S_DATA_A;
+                end
+            end
+            S_KEEP_A: begin
+                if (cross_64b) begin
+                    next_state = S_DATA_B;
+                end else if (num_trigs_left == 0) begin
+                    next_state = S_DONE;
+                end else if (trig_lowidx == 15) begin
+                    trig_bram_en = 1'b1;
                     next_state = S_DATA_A;
                 end else begin
+                    trig_bram_en = 1'b1;
                     next_state = S_KEEP_A;
                 end
             end
@@ -248,6 +261,12 @@ module ist_mem #(
     end
 
     always @(posedge aclk) begin
+        if (m_axi_ddr_rvalid && m_axi_ddr_rready) begin
+            m_axi_ddr_rdata_r <= m_axi_ddr_rdata;
+        end
+    end
+
+    always @(posedge aclk) begin
         if (state == S_IDLE) begin
             num_trigs_left <= req_num_trigs - 1;
             trig_lowidx    <= req_trig_idx[3:0];
@@ -259,7 +278,7 @@ module ist_mem #(
 
     always @(posedge aclk) begin
         case (state)
-            S_DATA_A: begin
+            S_DATA_A, S_KEEP_A: begin
                 case (trig_lowidx)
                           8: trig_ <= {{32{1'bX}}, rdata[15],  rdata[14],  rdata[13],  rdata[12],  rdata[11],  rdata[10],  rdata[9],   rdata[8]  };
                           1: trig_ <= {{32{1'bX}}, {32{1'bX}}, rdata[15],  rdata[14],  rdata[13],  rdata[12],  rdata[11],  rdata[10],  rdata[9]  };
