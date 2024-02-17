@@ -1,5 +1,5 @@
 #include <hls_stream.h>
-#include "D:/Vitis_HLS/include/datatypes.h"
+#include "D:/rtcore-hls/include/datatypes.h"
 
 void bbox_ctrl(/* in  */ hls::stream<bbox_ctrl_req_t>& bbox_ctrl_req_stream,
                /* in  */ hls::stream<bbox_mem_resp_t>& bbox_mem_resp_stream,

@@ -1,5 +1,5 @@
 #include <hls_stream.h>
-#include "D:/Vitis_HLS/include/datatypes.h"
+#include "D:/rtcore-hls/include/datatypes.h"
 
 void send_req(const id_t& id,
               const trv_local_mem_t trv_local_mem_[NUM_CONCURRENT_RAYS],
