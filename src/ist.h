@@ -4,7 +4,7 @@
 
 void ist(/* in  */ hls::stream<ist_req_t>& ist_req_stream,
          /* out */ hls::stream<ist_resp_t>& ist_resp_stream) {
-#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+//#pragma HLS INTERFACE mode=ap_ctrl_none port=return
 //#pragma HLS PIPELINE II=1
 
     ist_req_t ist_req = ist_req_stream.read();

@@ -4,11 +4,11 @@
 void ist_ctrl(/* in  */ hls::stream<ist_ctrl_req_t>& ist_ctrl_req_stream,
               /* in  */ hls::stream<ist_mem_resp_t>& ist_mem_resp_stream,
               /* in  */ hls::stream<ist_resp_t>& ist_resp_stream,
-              /* in  */ trig_t trig_[MAX_TRIGS_PER_NODE - 1][NUM_CONCURRENT_RAYS],
+              /* in  */ const trig_t trig_[MAX_TRIGS_PER_NODE - 1][NUM_CONCURRENT_RAYS],
               /* out */ hls::stream<ist_mem_req_t>& ist_mem_req_stream,
               /* out */ hls::stream<ist_req_t>& ist_req_stream,
               /* out */ hls::stream<ist_ctrl_resp_t>& ist_ctrl_resp_stream) {
-#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+//#pragma HLS INTERFACE mode=ap_ctrl_none port=return
 
     struct local_mem_t {
         ray_t ray;

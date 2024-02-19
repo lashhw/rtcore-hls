@@ -7,7 +7,7 @@ void bbox_ctrl(/* in  */ hls::stream<bbox_ctrl_req_t>& bbox_ctrl_req_stream,
                /* out */ hls::stream<bbox_mem_req_t>& bbox_mem_req_stream,
                /* out */ hls::stream<bbox_req_t>& bbox_req_stream,
                /* out */ hls::stream<bbox_ctrl_resp_t>& bbox_ctrl_resp_stream) {
-#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+//#pragma HLS INTERFACE mode=ap_ctrl_none port=return
     
     struct local_mem_t {
         preprocessed_ray_t preprocessed_ray;

@@ -14,7 +14,7 @@ float my_fmin(float a, float b) {
 
 void bbox(/* in  */ hls::stream<bbox_req_t>& bbox_req_stream,
           /* out */ hls::stream<bbox_resp_t>& bbox_resp_stream) {
-#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+//#pragma HLS INTERFACE mode=ap_ctrl_none port=return
 //#pragma HLS PIPELINE II=1
 
     bbox_req_t bbox_req = bbox_req_stream.read();

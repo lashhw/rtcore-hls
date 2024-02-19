@@ -73,7 +73,7 @@ void trv(/* in  */ hls::stream<trv_req_t>& trv_req_stream,
          /* out */ hls::stream<bbox_ctrl_req_t>& bbox_ctrl_req_stream,
          /* out */ hls::stream<ist_ctrl_req_t>& ist_ctrl_req_stream,
          /* out */ hls::stream<trv_resp_t>& trv_resp_stream) {
-#pragma HLS INTERFACE mode=ap_ctrl_none port=return
+//#pragma HLS INTERFACE mode=ap_ctrl_none port=return
 //#pragma HLS PIPELINE II=1
 
     static trv_local_mem_t trv_local_mem_[NUM_CONCURRENT_RAYS];
