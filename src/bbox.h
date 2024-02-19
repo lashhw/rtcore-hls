@@ -1,3 +1,6 @@
+#ifndef RTCORE_HLS_BBOX_H
+#define RTCORE_HLS_BBOX_H
+
 #include <hls_stream.h>
 #include <hls_math.h>
 #include "D:/rtcore-hls/include/datatypes.h"
@@ -66,3 +69,5 @@ void bbox(/* in  */ hls::stream<bbox_req_t>& bbox_req_stream,
     };
     bbox_resp_stream.write(bbox_resp);
 }
+
+#endif // RTCORE_HLS_BBOX_H

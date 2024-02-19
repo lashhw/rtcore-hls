@@ -1,5 +1,5 @@
-#ifndef PARAMS_H
-#define PARAMS_H
+#ifndef RTCORE_HLS_PARAMS_H
+#define RTCORE_HLS_PARAMS_H
 
 #define ID_WIDTH 5
 #define NUM_CONCURRENT_RAYS (1 << ID_WIDTH)
@@ -12,4 +12,4 @@
 #define STACK_SIZE_WIDTH 5
 #define STACK_SIZE ((1 << STACK_SIZE_WIDTH) - 1)
 
-#endif //PARAMS_H
+#endif // RTCORE_HLS_PARAMS_H

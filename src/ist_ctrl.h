@@ -1,3 +1,6 @@
+#ifndef RTCORE_HLS_IST_CTRL_H
+#define RTCORE_HLS_IST_CTRL_H
+
 #include <hls_stream.h>
 #include "D:/rtcore-hls/include/datatypes.h"
 
@@ -72,3 +75,5 @@ void ist_ctrl(/* in  */ hls::stream<ist_ctrl_req_t>& ist_ctrl_req_stream,
         }
     }
 }
+
+#endif // RTCORE_HLS_IST_CTRL_H

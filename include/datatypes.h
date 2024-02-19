@@ -1,5 +1,5 @@
-#ifndef DATATYPES_H
-#define DATATYPES_H
+#ifndef RTCORE_HLS_DATATYPES_H
+#define RTCORE_HLS_DATATYPES_H
 
 #include "ap_int.h"
 #include "params.h"
@@ -183,4 +183,4 @@ struct ist_resp_t {
     float v;
 };
 
-#endif //DATATYPES_H
+#endif // RTCORE_HLS_DATATYPES_H

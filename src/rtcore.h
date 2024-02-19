@@ -1,3 +1,6 @@
+#ifndef RTCORE_HLS_RTCORE_H
+#define RTCORE_HLS_RTCORE_H
+
 #include <hls_task.h>
 #include "bbox.h"
 #include "bbox_ctrl.h"
@@ -30,3 +33,5 @@ void rtcore(/* in  */ hls::stream<trv_req_t>& trv_req_stream,
     ist(ist_req_stream, ist_resp_stream);
     trv(trv_req_stream, bbox_ctrl_resp_stream, ist_ctrl_resp_stream, bbox_ctrl_req_stream, ist_ctrl_req_stream, trv_resp_stream);
 }
+
+#endif // RTCORE_HLS_RTCORE_H

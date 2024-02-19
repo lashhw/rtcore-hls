@@ -1,3 +1,6 @@
+#ifndef RTCORE_HLS_BBOX_CTRL_H
+#define RTCORE_HLS_BBOX_CTRL_H
+
 #include <hls_stream.h>
 #include "D:/rtcore-hls/include/datatypes.h"
 
@@ -50,3 +53,5 @@ void bbox_ctrl(/* in  */ hls::stream<bbox_ctrl_req_t>& bbox_ctrl_req_stream,
         bbox_ctrl_resp_stream.write(bbox_ctrl_resp);
     }
 }
+
+#endif // RTCORE_HLS_BBOX_CTRL_H

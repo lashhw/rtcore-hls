@@ -1,3 +1,6 @@
+#ifndef RTCORE_HLS_IST_H
+#define RTCORE_HLS_IST_H
+
 #include <hls_stream.h>
 #include <hls_math.h>
 #include "D:/rtcore-hls/include/datatypes.h"
@@ -52,3 +55,5 @@ void ist(/* in  */ hls::stream<ist_req_t>& ist_req_stream,
     };
     ist_resp_stream.write(ist_resp);
 }
+
+#endif // RTCORE_HLS_IST_H

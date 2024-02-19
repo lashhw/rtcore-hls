@@ -1,3 +1,6 @@
+#ifndef RTCORE_HLS_TRV_H
+#define RTCORE_HLS_TRV_H
+
 #include <hls_stream.h>
 #include "D:/rtcore-hls/include/datatypes.h"
 
@@ -130,3 +133,5 @@ void trv(/* in  */ hls::stream<trv_req_t>& trv_req_stream,
         stack_op(ist_ctrl_resp.id, trv_local_mem_, bbox_ctrl_req_stream, ist_ctrl_req_stream, trv_resp_stream);
     }
 }
+
+#endif // RTCORE_HLS_TRV_H
