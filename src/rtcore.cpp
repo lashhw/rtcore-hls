@@ -6,9 +6,9 @@
 #include "trv.h"
 
 void rtcore(/* in  */ hls::stream<trv_req_t>& trv_req_stream,
-            /* in  */ const trig_t trig_[MAX_TRIGS_PER_NODE - 1][NUM_CONCURRENT_RAYS],
             /* in  */ hls::stream<bbox_mem_resp_t>& bbox_mem_resp_stream,
             /* in  */ hls::stream<ist_mem_resp_t>& ist_mem_resp_stream,
+            /* in  */ const trig_t trig_[MAX_TRIGS_PER_NODE - 1][NUM_CONCURRENT_RAYS],
             /* out */ hls::stream<trv_resp_t>& trv_resp_stream,
             /* out */ hls::stream<bbox_mem_req_t>& bbox_mem_req_stream,
             /* out */ hls::stream<ist_mem_req_t>& ist_mem_req_stream) {
