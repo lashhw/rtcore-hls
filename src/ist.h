@@ -3,7 +3,7 @@
 
 #include <hls_stream.h>
 #include <hls_math.h>
-#include "D:/rtcore-hls/include/datatypes.h"
+#include "../include/datatypes.h"
 
 void ist(/* in  */ hls::stream<ist_req_t>& ist_req_stream,
          /* out */ hls::stream<ist_resp_t>& ist_resp_stream) {

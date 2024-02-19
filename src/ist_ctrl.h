@@ -2,7 +2,7 @@
 #define RTCORE_HLS_IST_CTRL_H
 
 #include <hls_stream.h>
-#include "D:/rtcore-hls/include/datatypes.h"
+#include "../include/datatypes.h"
 
 void ist_ctrl(/* in  */ hls::stream<ist_ctrl_req_t>& ist_ctrl_req_stream,
               /* in  */ hls::stream<ist_mem_resp_t>& ist_mem_resp_stream,

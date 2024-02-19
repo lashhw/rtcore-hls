@@ -3,7 +3,7 @@
 
 #include <hls_stream.h>
 #include <hls_math.h>
-#include "D:/rtcore-hls/include/datatypes.h"
+#include "../include/datatypes.h"
 
 float my_fmax(float a, float b) {
 #pragma HLS INLINE

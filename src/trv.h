@@ -2,7 +2,7 @@
 #define RTCORE_HLS_TRV_H
 
 #include <hls_stream.h>
-#include "D:/rtcore-hls/include/datatypes.h"
+#include "../include/datatypes.h"
 
 void send_req(const id_t& id,
               const trv_local_mem_t trv_local_mem_[NUM_CONCURRENT_RAYS],
