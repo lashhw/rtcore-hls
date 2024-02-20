@@ -37,7 +37,7 @@ void ist_sim(/* in  */ hls::stream<ist_req_t>& ist_req_stream,
         float t = inv_det * (c_x * n_x + c_y * n_y + c_z * n_z);
         if (t >= ray.tmin && t <= ray.tmax) {
             ist_resp_t ist_resp = {
-                .id = ist_req.id,
+                .rid = ist_req.rid,
                 .intersected = 1,
                 .t = t,
                 .u = u,
@@ -49,7 +49,7 @@ void ist_sim(/* in  */ hls::stream<ist_req_t>& ist_req_stream,
     } 
 
     ist_resp_t ist_resp = {
-        .id = ist_req.id,
+        .rid = ist_req.rid,
         .intersected = 0,
         .t = 0.0f,
         .u = 0.0f,

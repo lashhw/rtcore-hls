@@ -5,7 +5,7 @@
 #include "params.h"
 
 typedef ap_uint<1> bool_t;
-typedef ap_uint<ID_WIDTH> id_t;
+typedef ap_uint<ID_WIDTH> rid_t;
 typedef ap_uint<NUM_TRIGS_WIDTH> num_trigs_t;
 typedef ap_uint<CHILD_IDX_WIDTH> child_idx_t;
 typedef ap_uint<STACK_SIZE_WIDTH> stack_size_t;
@@ -91,12 +91,12 @@ struct trv_local_mem_t {
 };
 
 struct trv_req_t {
-    id_t id;
+    rid_t rid;
     ray_and_preprocessed_ray_t ray_and_preprocessed_ray;
 };
 
 struct trv_resp_t {
-    id_t id;
+    rid_t rid;
     bool_t intersected;
     /* TODO: add intersected idx */
     float t;
@@ -105,13 +105,13 @@ struct trv_resp_t {
 };
 
 struct bbox_ctrl_req_t {
-    id_t id;
+    rid_t rid;
     preprocessed_ray_t preprocessed_ray;
     child_idx_t nbp_idx;
 };
 
 struct bbox_ctrl_resp_t {
-    id_t id;
+    rid_t rid;
     bool_t left_hit;
     bool_t right_hit;
     bool_t left_first;
@@ -120,38 +120,38 @@ struct bbox_ctrl_resp_t {
 };
 
 struct bbox_mem_req_t {
-    id_t id;
+    rid_t rid;
     child_idx_t nbp_idx;
 };
 
 struct bbox_mem_resp_t {
-    id_t id;
+    rid_t rid;
     nbp_t nbp;
 };
 
 struct bbox_req_t {
-    id_t id;
+    rid_t rid;
     preprocessed_ray_t preprocessed_ray;
     bbox_t left_bbox;
     bbox_t right_bbox;
 };
 
 struct bbox_resp_t {
-    id_t id;
+    rid_t rid;
     bool_t left_hit;
     bool_t right_hit;
     bool_t left_first;
 };
 
 struct ist_ctrl_req_t {
-    id_t id;
+    rid_t rid;
     ray_t ray;
     num_trigs_t num_trigs;
     child_idx_t trig_idx;
 };
 
 struct ist_ctrl_resp_t {
-    id_t id;
+    rid_t rid;
     bool_t intersected;
     float t;
     float u;
@@ -159,24 +159,24 @@ struct ist_ctrl_resp_t {
 };
 
 struct ist_mem_req_t {
-    id_t id;
+    rid_t rid;
     num_trigs_t num_trigs;
     child_idx_t trig_idx;
 };
 
 struct ist_mem_resp_t {
-    id_t id;
+    rid_t rid;
     trig_t first_trig;
 };
 
 struct ist_req_t {
-    id_t id;
+    rid_t rid;
     ray_t ray;
     trig_t trig;
 };
 
 struct ist_resp_t {
-    id_t id;
+    rid_t rid;
     bool_t intersected;
     float t;
     float u;

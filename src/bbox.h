@@ -62,7 +62,7 @@ void bbox(/* in  */ hls::stream<bbox_req_t>& bbox_req_stream,
     bool_t left_first = left_entry <= right_entry; 
 
     bbox_resp_t bbox_resp = {
-        .id = bbox_req.id,
+        .rid = bbox_req.rid,
         .left_hit = left_hit,
         .right_hit = right_hit,
         .left_first = left_first
