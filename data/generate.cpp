@@ -110,18 +110,22 @@ int main() {
     assert(bvh.node_count % 2 == 1);
     for (int i = 1; i < nbp_s_size; i += 2) {
         node_t left_node = {
-            .num_trigs = bvh.nodes[i].primitive_count,
+            .num_trigs = (num_trigs_t)bvh.nodes[i].primitive_count,
             .child_idx = bvh.nodes[i].first_child_or_primitive
         };
         node_t right_node = {
-            .num_trigs = bvh.nodes[i + 1].primitive_count,
+            .num_trigs = (num_trigs_t)bvh.nodes[i + 1].primitive_count,
             .child_idx = bvh.nodes[i + 1].first_child_or_primitive
         };
 
-        if (left_node.num_trigs == 0)
+        if (left_node.num_trigs == 0) {
+            assert(left_node.child_idx % 2 == 1);
             left_node.child_idx /= 2;
-        if (right_node.num_trigs == 0)
+        }
+        if (right_node.num_trigs == 0) {
+            assert(right_node.child_idx % 2 == 1);
             right_node.child_idx /= 2;
+        }
 
         bbox_t left_bbox = {
             .x_min = bvh.nodes[i].bounds[0],
