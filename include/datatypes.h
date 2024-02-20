@@ -1,7 +1,7 @@
 #ifndef RTCORE_HLS_DATATYPES_H
 #define RTCORE_HLS_DATATYPES_H
 
-#include "ap_int.h"
+#include <ap_int.h>
 #include "params.h"
 
 typedef ap_uint<1> bool_t;
