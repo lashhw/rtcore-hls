@@ -81,6 +81,13 @@ struct nbp_t {
     bbox_t bbox[2];
 };
 
+struct result_t {
+    bool_t intersected;
+    float t;
+    float u;
+    float v;
+};
+
 struct trv_local_mem_t {
     node_t stack_[STACK_SIZE];
     stack_size_t stack_size;
