@@ -10,7 +10,9 @@ void ist(/* in  */ hls::stream<ist_req_t>& ist_req_stream,
 //#pragma HLS INTERFACE mode=ap_ctrl_none port=return
 //#pragma HLS PIPELINE II=1
 
-    ist_req_t ist_req = ist_req_stream.read();
+    ist_req_t ist_req;
+    if (!ist_req_stream.read_nb(ist_req))
+        return;
     ray_t& ray = ist_req.ray;
     trig_t& trig = ist_req.trig;
 
