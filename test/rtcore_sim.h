@@ -29,7 +29,7 @@ void rtcore_sim(/* in  */ hls::stream<trv_req_t>& trv_req_stream,
     hls_thread_local hls::stream<bbox_mem_resp_t> bbox_mem_resp_stream;
     hls_thread_local hls::stream<ist_mem_req_t> ist_mem_req_stream;
     hls_thread_local hls::stream<ist_mem_resp_t> ist_mem_resp_stream;
-    trig_t trig_[MAX_TRIGS_PER_NODE - 1][NUM_CONCURRENT_RAYS];
+    static trig_t trig_[MAX_TRIGS_PER_NODE - 1][NUM_CONCURRENT_RAYS];
 
     bbox_ctrl(bbox_ctrl_req_stream, bbox_mem_resp_stream, bbox_resp_stream, bbox_mem_req_stream, bbox_req_stream, bbox_ctrl_resp_stream);
     bbox_sim(bbox_req_stream, bbox_resp_stream);
