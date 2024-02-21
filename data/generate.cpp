@@ -147,15 +147,15 @@ int main() {
     trig_t trig_[trig_s_size];
     for (int i = 0; i < trig_s_size; i++) {
         trig_[i] = {
-            .p0_x = permuted_bvh_trig_.get()[i].p0[0],
-            .p0_y = permuted_bvh_trig_.get()[i].p0[1],
-            .p0_z = permuted_bvh_trig_.get()[i].p0[2],
-            .e1_x = permuted_bvh_trig_.get()[i].e1[0],
-            .e1_y = permuted_bvh_trig_.get()[i].e1[1],
-            .e1_z = permuted_bvh_trig_.get()[i].e1[2],
-            .e2_x = permuted_bvh_trig_.get()[i].e2[0],
-            .e2_y = permuted_bvh_trig_.get()[i].e2[1],
-            .e2_z = permuted_bvh_trig_.get()[i].e2[2]
+            .p0_x = permuted_bvh_trig_[i].p0[0],
+            .p0_y = permuted_bvh_trig_[i].p0[1],
+            .p0_z = permuted_bvh_trig_[i].p0[2],
+            .e1_x = permuted_bvh_trig_[i].e1[0],
+            .e1_y = permuted_bvh_trig_[i].e1[1],
+            .e1_z = permuted_bvh_trig_[i].e1[2],
+            .e2_x = permuted_bvh_trig_[i].e2[0],
+            .e2_y = permuted_bvh_trig_[i].e2[1],
+            .e2_z = permuted_bvh_trig_[i].e2[2]
         };
     }
 
