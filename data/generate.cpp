@@ -7,6 +7,7 @@
 #include <bvh/primitive_intersectors.hpp>
 #include <happly.h>
 #include "../include/datatypes.h"
+#include "gentypes.h"
 
 #define NUM_TEST_RAYS 10000
 
@@ -59,8 +60,7 @@ int main() {
     for (int i = 0; i < 3; i++)
         ray_region_max[i] = bbox_center[i] + bbox_length[i];
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
+    std::mt19937 gen;
     std::uniform_real_distribution<float> dis_x(ray_region_min[0], ray_region_max[0]);
     std::uniform_real_distribution<float> dis_y(ray_region_min[1], ray_region_max[1]);
     std::uniform_real_distribution<float> dis_z(ray_region_min[2], ray_region_max[2]);
@@ -70,7 +70,7 @@ int main() {
     primitive_intersector_t primitive_intersector(bvh, bvh_trig_.data());
 
     ray_t ray_[NUM_TEST_RAYS];
-    result_t result_[NUM_TEST_RAYS];
+    generate_result_t result_[NUM_TEST_RAYS];
     for (int i = 0; i < NUM_TEST_RAYS; i++) {
         ray_t ray = {
             .origin_x = dis_x(gen),
@@ -106,47 +106,38 @@ int main() {
     }
 
     int nbp_s_size = (int)bvh.node_count / 2;
-    nbp_t nbp_[nbp_s_size];
+    generate_nbp_t nbp_[nbp_s_size];
     assert(bvh.node_count % 2 == 1);
     for (int i = 1; i < nbp_s_size; i += 2) {
-        node_t left_node = {
-            .num_trigs = (num_trigs_t)bvh.nodes[i].primitive_count,
-            .child_idx = bvh.nodes[i].first_child_or_primitive
-        };
-        node_t right_node = {
-            .num_trigs = (num_trigs_t)bvh.nodes[i + 1].primitive_count,
-            .child_idx = bvh.nodes[i + 1].first_child_or_primitive
+        generate_nbp_t nbp = {
+            .left_node_num_trigs  = bvh.nodes[i].primitive_count,
+            .left_node_child_idx  = bvh.nodes[i].first_child_or_primitive,
+            .right_node_num_trigs = bvh.nodes[i + 1].primitive_count,
+            .right_node_child_idx = bvh.nodes[i + 1].first_child_or_primitive,
+            .left_bbox_x_min      = bvh.nodes[i].bounds[0],
+            .left_bbox_x_max      = bvh.nodes[i].bounds[1],
+            .left_bbox_y_min      = bvh.nodes[i].bounds[2],
+            .left_bbox_y_max      = bvh.nodes[i].bounds[3],
+            .left_bbox_z_min      = bvh.nodes[i].bounds[4],
+            .left_bbox_z_max      = bvh.nodes[i].bounds[5],
+            .right_bbox_x_min     = bvh.nodes[i + 1].bounds[0],
+            .right_bbox_x_max     = bvh.nodes[i + 1].bounds[1],
+            .right_bbox_y_min     = bvh.nodes[i + 1].bounds[2],
+            .right_bbox_y_max     = bvh.nodes[i + 1].bounds[3],
+            .right_bbox_z_min     = bvh.nodes[i + 1].bounds[4],
+            .right_bbox_z_max     = bvh.nodes[i + 1].bounds[5],
         };
 
-        if (left_node.num_trigs == 0) {
-            assert(left_node.child_idx % 2 == 1);
-            left_node.child_idx /= 2;
+        if (nbp.left_node_num_trigs == 0) {
+            assert(nbp.left_node_child_idx % 2 == 1);
+            nbp.left_node_child_idx /= 2;
         }
-        if (right_node.num_trigs == 0) {
-            assert(right_node.child_idx % 2 == 1);
-            right_node.child_idx /= 2;
+        if (nbp.right_node_num_trigs == 0) {
+            assert(nbp.right_node_child_idx % 2 == 1);
+            nbp.right_node_child_idx /= 2;
         }
 
-        bbox_t left_bbox = {
-            .x_min = bvh.nodes[i].bounds[0],
-            .x_max = bvh.nodes[i].bounds[1],
-            .y_min = bvh.nodes[i].bounds[2],
-            .y_max = bvh.nodes[i].bounds[3],
-            .z_min = bvh.nodes[i].bounds[4],
-            .z_max = bvh.nodes[i].bounds[5]
-        };
-        bbox_t right_bbox = {
-            .x_min = bvh.nodes[i + 1].bounds[0],
-            .x_max = bvh.nodes[i + 1].bounds[1],
-            .y_min = bvh.nodes[i + 1].bounds[2],
-            .y_max = bvh.nodes[i + 1].bounds[3],
-            .z_min = bvh.nodes[i + 1].bounds[4],
-            .z_max = bvh.nodes[i + 1].bounds[5]
-        };
-        nbp_[i / 2] = {
-            .node = { left_node, right_node },
-            .bbox = { left_bbox, right_bbox }
-        };
+        nbp_[i / 2] = nbp;
     }
 
     int trig_s_size = (int)bvh_trig_.size();
@@ -167,7 +158,7 @@ int main() {
 
     std::ofstream nbp_stream("nbp.bin", std::ios::binary);
     for (int i = 0; i < nbp_s_size; i++)
-        nbp_stream.write((char*)(&nbp_[i]), sizeof(nbp_t));
+        nbp_stream.write((char*)(&nbp_[i]), sizeof(generate_nbp_t));
 
     std::ofstream trig_stream("trig.bin", std::ios::binary);
     for (int i = 0; i < trig_s_size; i++)
@@ -179,7 +170,7 @@ int main() {
 
     std::ofstream result_stream("result.bin", std::ios::binary);
     for (auto &result : result_)
-        result_stream.write((char*)(&result), sizeof(result_t));
+        result_stream.write((char*)(&result), sizeof(generate_result_t));
 
     return 0;
 }
