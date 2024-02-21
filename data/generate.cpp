@@ -111,7 +111,7 @@ int main() {
     int generate_nbp_s_size = (int)bvh.node_count / 2;
     generate_nbp_t generate_nbp_[generate_nbp_s_size];
     assert(bvh.node_count % 2 == 1);
-    for (int i = 1; i < generate_nbp_s_size; i += 2) {
+    for (int i = 1; i < bvh.node_count; i += 2) {
         generate_nbp_t generate_nbp = {
             .left_node_num_trigs  = bvh.nodes[i].primitive_count,
             .left_node_child_idx  = bvh.nodes[i].first_child_or_primitive,
