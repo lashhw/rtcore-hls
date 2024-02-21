@@ -70,7 +70,7 @@ int main() {
     primitive_intersector_t primitive_intersector(bvh, bvh_trig_.data());
 
     ray_t ray_[NUM_TEST_RAYS];
-    generate_result_t result_[NUM_TEST_RAYS];
+    generate_result_t generate_result_[NUM_TEST_RAYS];
     for (int i = 0; i < NUM_TEST_RAYS; i++) {
         ray_t ray = {
             .origin_x = dis_x(gen),
@@ -96,20 +96,20 @@ int main() {
 
         auto result = traverser.traverse(bvh_ray, primitive_intersector);
         if (result.has_value()) {
-            result_[i].intersected = 1;
-            result_[i].t           = result->intersection.t;
-            result_[i].u           = result->intersection.u;
-            result_[i].v           = result->intersection.v;
+            generate_result_[i].intersected = 1;
+            generate_result_[i].t           = result->intersection.t;
+            generate_result_[i].u           = result->intersection.u;
+            generate_result_[i].v           = result->intersection.v;
         } else {
-            result_[i].intersected = 0;
+            generate_result_[i].intersected = 0;
         }
     }
 
-    int nbp_s_size = (int)bvh.node_count / 2;
-    generate_nbp_t nbp_[nbp_s_size];
+    int generate_nbp_s_size = (int)bvh.node_count / 2;
+    generate_nbp_t generate_nbp_[generate_nbp_s_size];
     assert(bvh.node_count % 2 == 1);
-    for (int i = 1; i < nbp_s_size; i += 2) {
-        generate_nbp_t nbp = {
+    for (int i = 1; i < generate_nbp_s_size; i += 2) {
+        generate_nbp_t generate_nbp = {
             .left_node_num_trigs  = bvh.nodes[i].primitive_count,
             .left_node_child_idx  = bvh.nodes[i].first_child_or_primitive,
             .right_node_num_trigs = bvh.nodes[i + 1].primitive_count,
@@ -128,16 +128,16 @@ int main() {
             .right_bbox_z_max     = bvh.nodes[i + 1].bounds[5],
         };
 
-        if (nbp.left_node_num_trigs == 0) {
-            assert(nbp.left_node_child_idx % 2 == 1);
-            nbp.left_node_child_idx /= 2;
+        if (generate_nbp.left_node_num_trigs == 0) {
+            assert(generate_nbp.left_node_child_idx % 2 == 1);
+            generate_nbp.left_node_child_idx /= 2;
         }
-        if (nbp.right_node_num_trigs == 0) {
-            assert(nbp.right_node_child_idx % 2 == 1);
-            nbp.right_node_child_idx /= 2;
+        if (generate_nbp.right_node_num_trigs == 0) {
+            assert(generate_nbp.right_node_child_idx % 2 == 1);
+            generate_nbp.right_node_child_idx /= 2;
         }
 
-        nbp_[i / 2] = nbp;
+        generate_nbp_[i / 2] = generate_nbp;
     }
 
     int trig_s_size = (int)bvh_trig_.size();
@@ -156,9 +156,9 @@ int main() {
         };
     }
 
-    std::ofstream nbp_stream("nbp.bin", std::ios::binary);
-    for (int i = 0; i < nbp_s_size; i++)
-        nbp_stream.write((char*)(&nbp_[i]), sizeof(generate_nbp_t));
+    std::ofstream generate_nbp_stream("generate_nbp.bin", std::ios::binary);
+    for (int i = 0; i < generate_nbp_s_size; i++)
+        generate_nbp_stream.write((char*)(&generate_nbp_[i]), sizeof(generate_nbp_t));
 
     std::ofstream trig_stream("trig.bin", std::ios::binary);
     for (int i = 0; i < trig_s_size; i++)
@@ -168,9 +168,9 @@ int main() {
     for (auto &ray : ray_)
         ray_stream.write((char*)(&ray), sizeof(ray_t));
 
-    std::ofstream result_stream("result.bin", std::ios::binary);
-    for (auto &result : result_)
-        result_stream.write((char*)(&result), sizeof(generate_result_t));
+    std::ofstream generate_result_stream("generate_result.bin", std::ios::binary);
+    for (auto &generate_result : generate_result_)
+        generate_result_stream.write((char*)(&generate_result), sizeof(generate_result_t));
 
     return 0;
 }
