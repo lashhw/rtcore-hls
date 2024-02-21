@@ -17,7 +17,7 @@ typedef bvh::Ray<float> bvh_ray_t;
 typedef bvh::Vector<float, 3> vector_t;
 typedef bvh::SweepSahBuilder<bvh_t> builder_t;
 typedef bvh::SingleRayTraverser<bvh_t> traverser_t;
-typedef bvh::ClosestPrimitiveIntersector<bvh_t, bvh_trig_t> primitive_intersector_t;
+typedef bvh::ClosestPrimitiveIntersector<bvh_t, bvh_trig_t, true> primitive_intersector_t;
 
 int main() {
     happly::PLYData ply_data("bun_zipper_res4.ply");
@@ -43,6 +43,9 @@ int main() {
     builder_t builder(bvh);
     builder.max_leaf_size = MAX_TRIGS_PER_NODE;
     builder.build(global_bbox, bboxes.get(), centers.get(), bvh_trig_.size());
+    std::unique_ptr<bvh_trig_t[]> permuted_bvh_trig_ = bvh::permute_primitives(bvh_trig_.data(),
+                                                                               bvh.primitive_indices.get(),
+                                                                               bvh_trig_.size());
 
     vector_t bbox_center;
     for (int i = 0; i < 3; i++)
@@ -67,7 +70,7 @@ int main() {
     std::uniform_real_distribution<float> dis_dir(-1.0f, 1.0f);
 
     traverser_t traverser(bvh);
-    primitive_intersector_t primitive_intersector(bvh, bvh_trig_.data());
+    primitive_intersector_t primitive_intersector(bvh, permuted_bvh_trig_.get());
 
     ray_t ray_[NUM_TEST_RAYS];
     generate_result_t generate_result_[NUM_TEST_RAYS];
@@ -144,15 +147,15 @@ int main() {
     trig_t trig_[trig_s_size];
     for (int i = 0; i < trig_s_size; i++) {
         trig_[i] = {
-            .p0_x = bvh_trig_[i].p0[0],
-            .p0_y = bvh_trig_[i].p0[1],
-            .p0_z = bvh_trig_[i].p0[2],
-            .e1_x = bvh_trig_[i].e1[0],
-            .e1_y = bvh_trig_[i].e1[1],
-            .e1_z = bvh_trig_[i].e1[2],
-            .e2_x = bvh_trig_[i].e2[0],
-            .e2_y = bvh_trig_[i].e2[1],
-            .e2_z = bvh_trig_[i].e2[2]
+            .p0_x = permuted_bvh_trig_.get()[i].p0[0],
+            .p0_y = permuted_bvh_trig_.get()[i].p0[1],
+            .p0_z = permuted_bvh_trig_.get()[i].p0[2],
+            .e1_x = permuted_bvh_trig_.get()[i].e1[0],
+            .e1_y = permuted_bvh_trig_.get()[i].e1[1],
+            .e1_z = permuted_bvh_trig_.get()[i].e1[2],
+            .e2_x = permuted_bvh_trig_.get()[i].e2[0],
+            .e2_y = permuted_bvh_trig_.get()[i].e2[1],
+            .e2_z = permuted_bvh_trig_.get()[i].e2[2]
         };
     }
 
