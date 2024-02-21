@@ -1,14 +1,14 @@
-#ifndef RTCORE_HLS_INIT_H
-#define RTCORE_HLS_INIT_H
+#ifndef RTCORE_HLS_INIT_SIM_H
+#define RTCORE_HLS_INIT_SIM_H
 
 #include <hls_stream.h>
 #include <hls_math.h>
 #include "../include/datatypes.h"
 
-void init(/* in  */ hls::stream<ray_t>& ray_stream,
-          /* in  */ hls::stream<trv_resp_t>& trv_resp_stream,
-          /* out */ hls::stream<trv_req_t>& trv_req_stream,
-          /* out */ hls::stream<result_t>& result_stream) {
+void init_sim(/* in  */ hls::stream<ray_t>& ray_stream,
+              /* in  */ hls::stream<trv_resp_t>& trv_resp_stream,
+              /* out */ hls::stream<trv_req_t>& trv_req_stream,
+              /* out */ hls::stream<result_t>& result_stream) {
     static bool running = false;
 
     ray_t ray;
@@ -24,9 +24,9 @@ void init(/* in  */ hls::stream<ray_t>& ray_stream,
                 .dir_x    = ray.dir_x,
                 .dir_y    = ray.dir_y,
                 .dir_z    = ray.dir_z,
-                .w_x      = hls::recip(ray.dir_x),
-                .w_y      = hls::recip(ray.dir_y),
-                .w_z      = hls::recip(ray.dir_z),
+                .w_x      = 1.0f / ray.dir_x,
+                .w_y      = 1.0f / ray.dir_y,
+                .w_z      = 1.0f / ray.dir_z,
                 .b_x      = (-ray.origin_x) / ray.dir_x,
                 .b_y      = (-ray.origin_y) / ray.dir_y,
                 .b_z      = (-ray.origin_z) / ray.dir_z,
@@ -47,4 +47,4 @@ void init(/* in  */ hls::stream<ray_t>& ray_stream,
     }
 }
 
-#endif // RTCORE_HLS_INIT_H
+#endif // RTCORE_HLS_INIT_SIM_H

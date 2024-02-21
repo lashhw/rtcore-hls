@@ -2,7 +2,7 @@
 #define RTCORE_HLS_RTCORE_SIM_H
 
 #include <hls_task.h>
-#include "../src/init.h"
+#include "init_sim.h"
 #include "../src/trv.h"
 #include "bbox_sim.h"
 #include "../src/bbox_ctrl.h"
@@ -34,7 +34,7 @@ void rtcore_sim(/* in  */ hls::stream<ray_t>& ray_stream,
     hls_thread_local hls::stream<ist_mem_resp_t> ist_mem_resp_stream;
     static trig_t trig_[MAX_TRIGS_PER_NODE - 1][NUM_CONCURRENT_RAYS];
 
-    init(ray_stream, trv_resp_stream, trv_req_stream, result_stream);
+    init_sim(ray_stream, trv_resp_stream, trv_req_stream, result_stream);
     trv(trv_req_stream, bbox_ctrl_resp_stream, ist_ctrl_resp_stream, bbox_ctrl_req_stream, ist_ctrl_req_stream, trv_resp_stream);
     bbox_ctrl(bbox_ctrl_req_stream, bbox_mem_resp_stream, bbox_resp_stream, bbox_mem_req_stream, bbox_req_stream, bbox_ctrl_resp_stream);
     bbox_sim(bbox_req_stream, bbox_resp_stream);
