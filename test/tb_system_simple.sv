@@ -299,9 +299,9 @@ module tb_system_simple();
             data = 0;
             data[offset*8+:288] = convert_trig(trig);
             ist_agent.mem_model.backdoor_memory_write(addr_1_aligned, data[511:0], strobe[63:0]);
-            $display("%h %h %h", addr_1_aligned, data[511:0], strobe[63:0]);
+            //$display("%h %h %h", addr_1_aligned, data[511:0], strobe[63:0]);
             ist_agent.mem_model.backdoor_memory_write(addr_2_aligned, data[1023:512], strobe[127:64]);
-            $display("%h %h %h", addr_2_aligned, data[1023:512], strobe[127:64]);
+            //$display("%h %h %h", addr_2_aligned, data[1023:512], strobe[127:64]);
         end
         $fclose(fd_1);
         ist_agent.start_slave();
