@@ -9,11 +9,11 @@ module bbox_mem #(
     parameter [5:0]            NBP_BYTES = 56,
     parameter                  NBP_WIDTH = 8 * NBP_BYTES
 )(                             
-    input  [ID_WIDTH+NBP_IDX_WIDTH-1:0] bbox_mem_req_din,
+    input  [ID_WIDTH+NBP_IDX_WIDTH-1:0] bbox_mem_req_dout,
     input                               bbox_mem_req_empty,
     output                              bbox_mem_req_read,
                         
-    output [ID_WIDTH+NBP_WIDTH-1:0]     bbox_mem_resp_dout,
+    output [ID_WIDTH+NBP_WIDTH-1:0]     bbox_mem_resp_din,
     input                               bbox_mem_resp_full,
     output                              bbox_mem_resp_write,
 
@@ -65,7 +65,7 @@ module bbox_mem #(
 
     assign bbox_mem_req_read = (state == S_IDLE & (~bbox_mem_req_empty));
     
-    assign bbox_mem_resp_dout = {nbp, id};
+    assign bbox_mem_resp_din = {nbp, id};
     assign bbox_mem_resp_write = (state == S_DONE & (~bbox_mem_resp_full));
 
     assign m_axi_ddr_araddr = (state == S_ADDR_A ? {highaddr_a, 6'b000000} : {highaddr_b, 6'b000000});
@@ -77,7 +77,7 @@ module bbox_mem #(
     assign m_axi_ddr_arvalid = (state == S_ADDR_A || state == S_ADDR_B);
     assign m_axi_ddr_rready = (state == S_DATA_A || state == S_DATA_B);
 
-    assign {req_nbp_idx, req_id} = bbox_mem_req_din;
+    assign {req_nbp_idx, req_id} = bbox_mem_req_dout;
 
     assign cross_4k = (req_nbp_idx[8:0] == 1 * 73 ||
                        req_nbp_idx[8:0] == 2 * 73 || 

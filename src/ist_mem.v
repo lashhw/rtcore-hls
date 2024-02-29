@@ -31,11 +31,11 @@ module ist_mem #(
     parameter [5:0]            TRIG_BYTES = 36,
     parameter                  TRIG_WIDTH = 8 * TRIG_BYTES
 )(                             
-    input      [ID_WIDTH+NUM_TRIGS_WIDTH+TRIG_IDX_WIDTH-1:0] ist_mem_req_din,
+    input      [ID_WIDTH+NUM_TRIGS_WIDTH+TRIG_IDX_WIDTH-1:0] ist_mem_req_dout,
     input                                                    ist_mem_req_empty,
     output                                                   ist_mem_req_read,
                             
-    output     [ID_WIDTH+TRIG_WIDTH-1:0]                     ist_mem_resp_dout,
+    output     [ID_WIDTH+TRIG_WIDTH-1:0]                     ist_mem_resp_din,
     input                                                    ist_mem_resp_full,
     output                                                   ist_mem_resp_write,
 
@@ -118,7 +118,7 @@ module ist_mem #(
 
     assign ist_mem_req_read = (state == S_IDLE && (~ist_mem_req_empty));
     
-    assign ist_mem_resp_dout  = {trig_, id};
+    assign ist_mem_resp_din  = {trig_, id};
     assign ist_mem_resp_write = (state == S_DONE && (~ist_mem_resp_full));
 
     assign trig_bram_addr = (num_trigs_left - 1) * NUM_CONCURRENT_RAYS + id;
@@ -134,7 +134,7 @@ module ist_mem #(
     assign m_axi_ddr_arvalid = (state == S_ADDR_A || state == S_ADDR_B);
     assign m_axi_ddr_rready  = (state == S_DATA_A || state == S_DATA_B);
 
-    assign {req_trig_idx, req_num_trigs, req_id} = ist_mem_req_din;
+    assign {req_trig_idx, req_num_trigs, req_id} = ist_mem_req_dout;
     
     assign start_offset   = req_trig_idx * TRIG_BYTES;
     assign end_offset     = (req_trig_idx + req_num_trigs) * TRIG_BYTES - 1;
