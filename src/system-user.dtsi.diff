@@ -1,0 +1,75 @@
+diff --git a/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi b/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
+index a5f367d..7ff334e 100644
+--- a/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
++++ b/project-spec/meta-user/recipes-bsp/device-tree/files/system-user.dtsi
+@@ -7,6 +7,56 @@
+ #include <dt-bindings/mux/mux.h>
+ 
+ / {
++    chosen {
++        bootargs = " earlycon console=ttyPS0,115200 clk_ignore_unused root=/dev/ram0 rw uio_pdrv_genirq.of_id=generic-uio";
++        stdout-path = "serial0:115200n8";
++    };
++    
++    reserved-memory {
++        #address-cells = <2>;
++        #size-cells = <2>;
++        ranges;
++        
++        reserved_nbp: buffer@0 {
++            no-map;
++            reg = <0x8 0x00000000 0x0 0x10000000>;
++        };
++        
++        reserved_trig: buffer@1 {
++            no-map;
++            reg = <0x8 0x40000000 0x0 0x10000000>;
++        };
++        
++        reserved_ray: buffer@2 {
++            no-map;
++            reg = <0x8 0x80000000 0x0 0x10000000>;
++        };
++        
++        reserved_result: buffer@3 {
++            no-map;
++            reg = <0x8 0xc0000000 0x0 0x10000000>;
++        };
++    };
++    
++    reserved-driver@0 {
++        compatible = "xlnx,reserved-memory";
++        memory-region = <&reserved_nbp>;
++    };
++    
++    reserved-driver@1 {
++        compatible = "xlnx,reserved-memory";
++        memory-region = <&reserved_trig>;
++    };
++    
++    reserved-driver@2 {
++        compatible = "xlnx,reserved-memory";
++        memory-region = <&reserved_ray>;
++    };
++    
++    reserved-driver@3 {
++        compatible = "xlnx,reserved-memory";
++        memory-region = <&reserved_result>;
++    };
+ };
+ 
+ &sdhci1 {
+@@ -414,7 +464,7 @@ devicetree/bindings/mux/mux-controller.txt
+ 	"gpio173";
+ 
+ };
+-
++/*
+ &uio_axi_gpio_btn {
+ 	gpio-line-names = "btnR", "btnL", "btnD", "btnC", "btnU";
+ };
+@@ -430,3 +480,4 @@ devicetree/bindings/mux/mux-controller.txt
+ &uio_pwm_rgb_led {
+ 	compatible = "digilent,pwm-rgb-led";
+ };
++*/
