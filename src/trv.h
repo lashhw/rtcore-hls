@@ -108,6 +108,8 @@ void trv(/* in  */ hls::stream<trv_req_t>& trv_req_stream,
     } else if (bbox_ctrl_resp_stream.read_nb(bbox_ctrl_resp)) {
         if (bbox_ctrl_resp.left_hit) {
             if (bbox_ctrl_resp.right_hit) {
+                // TODO: replace with if (!(!left_is_leaf && right_is_leaf) && (bbox_ctrl_resp.left_first || left_is_leaf))
+                //       to ensure leaf nodes are intersected first, in order to reduce traversal steps
                 if (bbox_ctrl_resp.left_first) {
                     trv_local_mem_[bbox_ctrl_resp.rid].stack_[trv_local_mem_[bbox_ctrl_resp.rid].stack_size++] = bbox_ctrl_resp.right_node;
                     send_req(bbox_ctrl_resp.rid, trv_local_mem_, bbox_ctrl_resp.left_node, bbox_ctrl_req_stream, ist_ctrl_req_stream);
